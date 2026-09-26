@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>DOT-01 Studio · Make Your Own Slowed EDM</title>
-<meta name="description" content="No experience needed: follow the step-by-step guide and build your own slowed + reverb EDM track with drums, bass, chords, melody and arrangement on the same page, then record and download it." />
+<title>DOT-01 Studio · Make Your Own EDM</title>
+<meta name="description" content="No experience needed: follow the step-by-step guide and build your own progressive house / EDM track on a drag-and-drop timeline with drums, bass, chords, melody and arpeggio, then record and download it." />
 <meta name="theme-color" content="#0a0a0a" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111'/%3E%3Cg fill='%23eee'%3E%3Ccircle cx='8' cy='16' r='2'/%3E%3Ccircle cx='12' cy='11' r='2'/%3E%3Ccircle cx='16' cy='16' r='2'/%3E%3Ccircle cx='20' cy='21' r='2'/%3E%3C/g%3E%3Ccircle cx='24' cy='16' r='2.6' fill='%23D71921'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,14 +12,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Doto:wght@500;700;900&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <script>try{if(sessionStorage.getItem('dot01:powered'))document.documentElement.classList.add('powered')}catch(e){}</script>
 <link rel="stylesheet" href="style.css?v=4" />
-<link rel="stylesheet" href="studio.css?v=1" />
+<link rel="stylesheet" href="studio.css?v=3" />
 </head>
 <body class="studio-page">
 <div class="app studio-app">
   <header class="top">
     <div class="brand">
       <span class="brand-dot" aria-hidden="true"></span>
-      <div><h1 class="dotfont">DOT—01 STUDIO</h1><p class="mono sub">Make your own slowed + reverb EDM</p></div>
+      <div><h1 class="dotfont">DOT—01 STUDIO</h1><p class="mono sub">Make your own EDM · step by step</p></div>
     </div>
     <div class="top-actions">
       <a class="pill" href="./" title="Back to the single synth">SYNTH</a>
@@ -36,9 +36,10 @@
     </div>
     <div class="tp-mid" id="tp-knobs"></div>
     <div class="tp-right">
-      <div class="tp-read mono"><span>REAL BPM</span><b class="dotfont" id="eff-bpm">102</b></div>
+      <div class="tp-read mono"><span>REAL BPM</span><b class="dotfont" id="eff-bpm">128</b></div>
       <div class="tp-read mono"><span>POSITION</span><b class="dotfont" id="pos">1.1</b></div>
-      <label class="tp-key mono">KEY <select class="tp-select" id="key-root" aria-label="Key"></select><span>MINOR</span></label>
+      <label class="tp-key mono">KEY <select class="tp-select" id="key-root" aria-label="Key"></select></label>
+      <div class="seg" id="scale"><button data-v="minor">MINOR</button><button data-v="major">MAJOR</button></div>
     </div>
   </section>
 
@@ -56,26 +57,30 @@
     <!-- workspace -->
     <main class="work">
       <section class="card panel" id="p-song">
-        <div class="p-head"><div class="mod-title"><span class="idx">A</span>SONG ARRANGEMENT</div><span class="p-sub">Each block is a section. Click one to edit it</span><div class="grow"></div><button class="ghost-btn" id="song-reset">RESET LAYOUT</button></div>
-        <div class="timeline" id="timeline"></div>
+        <div class="p-head"><div class="mod-title"><span class="idx">A</span>TIMELINE</div><span class="p-sub">Drag clips to move · drag the right edge to stretch · Alt-drag to copy · double-click an empty spot to add</span><div class="grow"></div><button class="ghost-btn" id="song-reset">RESET LAYOUT</button></div>
+        <div class="tl" id="tl"></div>
+        <div class="clip-bar" id="clip-bar"></div>
         <div class="sec-edit" id="sec-edit"></div>
       </section>
 
       <section class="card panel" id="p-drums">
-        <div class="p-head"><div class="mod-title"><span class="idx">B</span>DRUMS</div><span class="p-sub">16 steps per bar · every 4 steps is one beat</span><div class="grow"></div><div class="btn-row" id="drum-presets"></div></div>
+        <div class="p-head"><div class="mod-title"><span class="idx">B</span>DRUMS</div><div class="pbar" data-tr="drums"></div><div class="grow"></div><div class="btn-row" id="drum-presets"></div></div>
+        <p class="p-sub">One bar · 16 steps · every 4 steps is one beat. Click or drag across squares to paint.</p>
         <div class="grid" id="drum-grid"></div>
       </section>
 
       <div class="two">
         <section class="card panel" id="p-chords">
-          <div class="p-head"><div class="mod-title"><span class="idx">C</span>CHORDS</div><span class="p-sub">4-bar loop · click a chord to change it</span></div>
+          <div class="p-head"><div class="mod-title"><span class="idx">C</span>CHORDS</div><div class="pbar" data-tr="chords"></div></div>
+          <p class="p-sub">4 bars, one chord per bar · click a chord to change it</p>
           <div class="prog" id="prog"></div>
           <div class="p-row"><span class="lbl mono">PRESETS</span><div class="btn-row" id="prog-presets"></div></div>
           <div class="p-row"><span class="lbl mono">SOUND</span><div class="seg" data-p="chords.sound"></div></div>
           <div class="p-row"><span class="lbl mono">RHYTHM</span><div class="seg" data-p="chords.rhythm"></div></div>
         </section>
         <section class="card panel" id="p-bass">
-          <div class="p-head"><div class="mod-title"><span class="idx">D</span>BASS</div><span class="p-sub">Automatically follows the chord roots</span></div>
+          <div class="p-head"><div class="mod-title"><span class="idx">D</span>BASS</div><div class="pbar" data-tr="bass"></div></div>
+          <p class="p-sub">One bar · automatically follows the chord roots</p>
           <div class="grid one" id="bass-grid"></div>
           <div class="p-row"><span class="lbl mono">SOUND</span><div class="seg" data-p="bass.sound"></div></div>
           <div class="p-row"><span class="lbl mono">PATTERN</span><div class="seg" data-p="bass.mode"></div><div class="grow"></div><div class="btn-row" id="bass-presets"></div></div>
@@ -83,19 +88,21 @@
       </div>
 
       <section class="card panel" id="p-lead">
-        <div class="p-head"><div class="mod-title"><span class="idx">E</span>LEAD MELODY</div><span class="p-sub">2 bars · each row is a note, all in key, so nothing can sound wrong</span><div class="grow"></div><button class="ghost-btn" id="lead-idea">✦ GIVE ME AN IDEA</button><button class="ghost-btn" id="lead-clear">CLEAR</button></div>
-        <div class="roll-wrap"><div class="roll" id="roll"></div></div>
+        <div class="p-head"><div class="mod-title"><span class="idx">E</span>LEAD MELODY</div><div class="pbar" data-tr="lead"></div><div class="grow"></div><button class="ghost-btn" id="lead-idea">✦ GIVE ME AN IDEA</button><button class="ghost-btn" id="lead-clear">CLEAR</button></div>
+        <p class="p-sub">2 bars · click to add a note · drag a note to move it · drag its right edge to make it longer · click a note (without dragging) to remove it. Every row is in key.</p>
+        <div class="roll-wrap"><div class="roll2" id="roll"></div></div>
         <div class="p-row"><span class="lbl mono">SOUND</span><div class="seg" data-p="lead.sound"></div><span class="lbl mono">OCTAVE</span><div class="seg" data-p="lead.oct"></div></div>
       </section>
 
       <div class="two">
         <section class="card panel" id="p-arp">
-          <div class="p-head"><div class="mod-title"><span class="idx">F</span>ARPEGGIO</div><span class="p-sub">Plays the chord notes one at a time</span></div>
+          <div class="p-head"><div class="mod-title"><span class="idx">F</span>ARPEGGIO</div><div class="pbar" data-tr="arp"></div></div>
+          <p class="p-sub">Plays the current chord one note at a time. Drag the chip onto the ARP row of the timeline.</p>
           <div class="p-row"><span class="lbl mono">SOUND</span><div class="seg" data-p="arp.sound"></div></div>
           <div class="p-row"><span class="lbl mono">RATE</span><div class="seg" data-p="arp.rate"></div><span class="lbl mono">DIRECTION</span><div class="seg" data-p="arp.dir"></div></div>
         </section>
         <section class="card panel" id="p-fx">
-          <div class="p-head"><div class="mod-title"><span class="idx">G</span>SPACE</div><span class="p-sub">The soul of slowed + reverb</span></div>
+          <div class="p-head"><div class="mod-title"><span class="idx">G</span>SPACE</div><span class="p-sub">Reverb, echo, pump and tape character</span></div>
           <div class="knobs" id="fx-knobs"></div>
         </section>
       </div>
@@ -118,7 +125,7 @@
   </div>
 
   <footer class="foot mono">
-    <span>DOT—01 STUDIO · All sound is generated live in your browser · your project is saved on this device</span>
+    <span>DOT—01 STUDIO · all sound is generated live in your browser · your project is saved on this device</span>
     <a href="https://app-gallery.zichaoleng55.workers.dev/">← App Gallery</a>
   </footer>
 </div>
@@ -131,6 +138,6 @@
   </button>
 </div>
 <div class="toast mono" id="toast" role="status"></div>
-<script src="studio.js?v=2"></script>
+<script src="studio.js?v=4"></script>
 </body>
 </html>

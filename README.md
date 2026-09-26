@@ -11,6 +11,6 @@ A retro, dot-matrix polyphonic synthesizer that runs entirely in the browser (We
 
 ## Studio (`/studio`)
 
-A multitrack sketchpad with a built-in, step-by-step tutorial for complete beginners: drums, bass that follows the chords, chord progressions, a scale-locked piano roll, arpeggio, sidechain pump, a SLOWED control (tempo and pitch drop together), reverb/lo-fi, song arrangement (intro / build / drop / break / outro) and one-click recording of the whole song. Projects are saved in the browser.
+A drag-and-drop EDM timeline with a built-in, step-by-step tutorial for complete beginners (reference track: Janji – Heroes Tonight, NCS). Patterns (P01, P02…) for drums, bass, chords, lead and arpeggio are placed as clips you can move, stretch and copy; the lead piano roll has draggable, resizable notes. Also: sidechain pump, a SLOWED control, reverb/echo/lo-fi, section markers with automatic risers and drops, mute/solo, and one-click recording of the whole song. Projects are saved in the browser.
 
 Deployed as a static Cloudflare Worker: `npx wrangler deploy`.
