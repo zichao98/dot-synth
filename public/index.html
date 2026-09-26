@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Doto:wght@500;700;900&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=1" />
+<link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
 <div class="app">
@@ -20,6 +20,7 @@
       <div><h1 class="dotfont">DOT—01</h1><p class="mono sub">Polyphonic synthesizer · 8 voices</p></div>
     </div>
     <div class="top-actions">
+      <a class="pill" href="studio.html" title="Make a whole song with the step-by-step guide" style="text-decoration:none"><span class="led rec on"></span><span>STUDIO</span></a>
       <button class="pill" id="midi-btn" title="Connect a MIDI keyboard"><span class="led" id="midi-led"></span><span>MIDI</span></button>
       <button class="pill" id="rec-btn" title="Record what you play and download it"><span class="led rec" id="rec-led"></span><span id="rec-label">REC</span></button>
       <button class="pill icon" id="theme-btn" aria-label="Toggle light / dark"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg></button>
@@ -99,6 +100,6 @@
   </button>
 </div>
 <div class="toast mono" id="toast" role="status"></div>
-<script src="app.js?v=1"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>
