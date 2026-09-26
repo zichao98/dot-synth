@@ -704,10 +704,15 @@ registerProcessor('crush',Crush);`;
   };
   let toastT = 0;
   function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
+  let powering = null;
   async function power() {
-    if (!ctx) { await initAudio(); $('#power').classList.add('off'); setTimeout(() => { $('#power').hidden = true; }, 500); readout('ENGINE', 'ON'); }
+    if (!powering) powering = (async () => { await initAudio(); try { sessionStorage.setItem('dot01:powered', '1'); } catch { /* storage unavailable */ } $('#power').classList.add('off'); setTimeout(() => { $('#power').hidden = true; }, 500); readout('ENGINE', 'ON'); })();
+    await powering;
     if (ctx.state !== 'running') await ctx.resume();
   }
+
+  // After the first POWER ON in this browser session, skip the overlay and start audio on the first gesture.
+  if (document.documentElement.classList.contains('powered')) ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => power(), { once: true, capture: true }));
   $('#power-btn').onclick = () => power();
   document.addEventListener('visibilitychange', () => { if (document.hidden && !holdMode) releaseAll(); });
 

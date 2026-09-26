@@ -164,6 +164,7 @@ kbd { font: 700 10px var(--mono); border: 1px solid var(--line); border-bottom-w
 /* power overlay */
 .power { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 70%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: opacity .5s; }
 .power.off { opacity: 0; pointer-events: none; }
+.powered .power { display: none; }
 .power-btn { display: grid; justify-items: center; gap: 12px; border: 0; background: none; }
 .power-btn .dotfont { font-size: 30px; font-weight: 900; }
 .power-btn .mono { font-size: 11px; letter-spacing: .14em; color: var(--ink2); text-transform: uppercase; }

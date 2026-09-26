@@ -627,9 +627,12 @@
   let toastT = 0;
   function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2000); }
   async function power() {
-    if (!ctx) { initAudio(); $('#power').classList.add('off'); setTimeout(() => { $('#power').hidden = true; }, 500); }
+    if (!ctx) { initAudio(); try { sessionStorage.setItem('dot01:powered', '1'); } catch { /* storage unavailable */ } $('#power').classList.add('off'); setTimeout(() => { $('#power').hidden = true; }, 500); }
     if (ctx.state !== 'running') await ctx.resume();
   }
+
+  // After the first POWER ON in this browser session, skip the overlay and start audio on the first gesture.
+  if (document.documentElement.classList.contains('powered')) ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => power(), { once: true, capture: true }));
   $('#power-btn').onclick = () => power();
 
   /* ───────── Boot ───────── */
