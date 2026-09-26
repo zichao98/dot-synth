@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>DOT-01 Synthesizer</title>
+<meta name="description" content="DOT-01: a retro dot-matrix polyphonic synthesizer in your browser. Two oscillators, filter, envelopes, LFO, effects, arpeggiator, step sequencer, MIDI and recording." />
+<meta name="theme-color" content="#0a0a0a" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111'/%3E%3Cg fill='%23eee'%3E%3Ccircle cx='8' cy='16' r='2'/%3E%3Ccircle cx='12' cy='11' r='2'/%3E%3Ccircle cx='16' cy='16' r='2'/%3E%3Ccircle cx='20' cy='21' r='2'/%3E%3C/g%3E%3Ccircle cx='24' cy='16' r='2.6' fill='%23D71921'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@500;700;900&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="brand-dot" aria-hidden="true"></span>
+      <div><h1 class="dotfont">DOT—01</h1><p class="mono sub">Polyphonic synthesizer · 8 voices</p></div>
+    </div>
+    <div class="top-actions">
+      <button class="pill" id="midi-btn" title="Connect a MIDI keyboard"><span class="led" id="midi-led"></span><span>MIDI</span></button>
+      <button class="pill" id="rec-btn" title="Record what you play and download it"><span class="led rec" id="rec-led"></span><span id="rec-label">REC</span></button>
+      <button class="pill icon" id="theme-btn" aria-label="Toggle light / dark"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg></button>
+    </div>
+  </header>
+
+  <section class="screen card">
+    <div class="screen-inner">
+      <div class="screen-top mono">
+        <button class="nav" id="prev-preset" aria-label="Previous preset">‹</button>
+        <div class="preset-name" id="preset-name">INIT</div>
+        <button class="nav" id="next-preset" aria-label="Next preset">›</button>
+        <select id="preset-select" class="preset-select" aria-label="Choose preset"></select>
+        <div class="grow"></div>
+        <div class="seg small" id="viz-mode"><button data-v="scope" class="on">SCOPE</button><button data-v="spectrum">SPECTRUM</button></div>
+      </div>
+      <div class="screen-main">
+        <canvas id="viz" aria-label="Oscilloscope"></canvas>
+        <div class="readout" id="readout" aria-live="polite"><span class="r-label mono" id="r-label">READY</span><span class="r-val dotfont" id="r-val">—</span></div>
+      </div>
+      <div class="screen-bottom mono">
+        <span><i class="led on"></i> VOICES <b id="voice-count">0</b></span>
+        <span>BPM <b id="bpm-view">110</b></span>
+        <span>OCT <b id="oct-view">C3</b></span>
+        <span class="grow"></span>
+        <button class="ghost-btn" id="save-preset">SAVE</button>
+        <button class="ghost-btn" id="random-preset">RANDOM</button>
+        <button class="ghost-btn" id="share-preset">SHARE</button>
+        <button class="ghost-btn" id="init-preset">INIT</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="rack" id="rack"></main>
+
+  <section class="card seq-card" id="seq-card">
+    <div class="seq-head">
+      <div class="mod-title"><span class="idx mono">09</span>ARP / SEQUENCER</div>
+      <div class="seq-controls" id="seq-controls"></div>
+    </div>
+    <div class="seq-body">
+      <div class="arp" id="arp"></div>
+      <div class="steps-wrap">
+        <div class="btn-row">
+          <button class="pill" id="seq-play"><span class="led" id="seq-led"></span><span id="seq-play-label">PLAY</span></button>
+          <button class="pill" id="seq-rec" title="Step record: play notes to fill steps"><span class="led rec" id="seq-rec-led"></span>STEP REC</button>
+          <button class="ghost-btn" id="seq-random">RANDOM</button>
+          <button class="ghost-btn" id="seq-clear">CLEAR</button>
+          <span class="hint mono" id="seq-hint">Click a step to toggle it</span>
+        </div>
+        <div class="steps" id="steps"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card keys-card">
+    <div class="keys-head mono">
+      <div class="oct-ctl"><button class="pill icon" id="oct-down" aria-label="Octave down">−</button><span>OCTAVE</span><button class="pill icon" id="oct-up" aria-label="Octave up">+</button></div>
+      <span class="hint">Play with your computer keyboard: <kbd>A</kbd>–<kbd>;</kbd> white · <kbd>W</kbd><kbd>E</kbd><kbd>T</kbd><kbd>Y</kbd><kbd>U</kbd> black · <kbd>Z</kbd>/<kbd>X</kbd> octave</span>
+      <div class="grow"></div>
+      <label class="mono hold"><input type="checkbox" id="hold"> HOLD</label>
+    </div>
+    <div class="keys-scroll"><div class="keys" id="keys"></div></div>
+  </section>
+
+  <footer class="foot mono">
+    <span>DOT—01 · Web Audio synthesizer · all sound is generated in your browser</span>
+    <a href="https://app-gallery.zichaoleng55.workers.dev/">← App Gallery</a>
+  </footer>
+</div>
+
+<div class="power" id="power">
+  <button class="power-btn" id="power-btn">
+    <span class="power-ring" aria-hidden="true"></span>
+    <span class="dotfont">POWER ON</span>
+    <span class="mono">Tap to start the audio engine</span>
+  </button>
+</div>
+<div class="toast mono" id="toast" role="status"></div>
+<script src="app.js?v=1"></script>
+</body>
+</html>
